@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>User Info</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.8.6/fingerprint2.min.js"></script>
 </head>
 <body>
     <h1>User Information</h1>
@@ -34,7 +35,10 @@
                          "Referrer URL: " + document.referrer + "<br>" +
                          "Window Width: " + window.innerWidth + "<br>" +
                          "Window Height: " + window.innerHeight + "<br>" +
-                         "Local Time: " + new Date().toLocaleString();
+                         "Local Time: " + new Date().toLocaleString() + "<br>" +
+                         "Canvas Fingerprint: " + getCanvasFingerprint() + "<br>" +
+                         "WebGL Fingerprint: " + getWebGLFingerprint() + "<br>" +
+                         "Audio Fingerprint: " + getAudioFingerprint();
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
@@ -43,6 +47,48 @@
             });
         } else {
             info.innerHTML += "<br>Geolocation is not supported by this browser.";
+        }
+
+        // Set a cookie
+        document.cookie = "username=John Doe";
+
+        // Use session storage
+        sessionStorage.setItem("lastname", "Smith");
+
+        // Use local storage
+        localStorage.setItem("email", "john@example.com");
+
+        // Use FingerprintJS library
+        new Fingerprint2().get(function(result, components){
+            info.innerHTML += "<br>FingerprintJS Result: " + result;
+        });
+
+        function getCanvasFingerprint() {
+            var canvas = document.createElement('canvas');
+            var ctx = canvas.getContext('2d');
+            ctx.fillText('canvas fingerprint', 50, 50);
+            return canvas.toDataURL();
+        }
+
+        function getWebGLFingerprint() {
+            var canvas = document.createElement('canvas');
+            var gl = canvas.getContext('webgl');
+            var debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+            return gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+        }
+
+        function getAudioFingerprint() {
+            // This is a simplified version and may not work in all browsers.
+            // For a more robust version, consider using a library such as Fingerprintjs.
+            var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            var oscillator = audioContext.createOscillator();
+            var analyser = audioContext.createAnalyser();
+            oscillator.connect(analyser);
+            analyser.connect(audioContext.destination);
+            oscillator.start(0);
+            var fingerprint = analyser.frequencyBinCount;
+            oscillator.stop(0);
+            return fingerprint;
         }
     }
     </script>
