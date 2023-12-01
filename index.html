@@ -25,7 +25,25 @@
                          "Platform: " + navigator.platform + "<br>" +
                          "Language: " + navigator.language + "<br>" +
                          "Cookies Enabled: " + navigator.cookieEnabled + "<br>" +
-                         "User Agent: " + navigator.userAgent;
+                         "User Agent: " + navigator.userAgent + "<br>" +
+                         "Screen Width: " + screen.width + "<br>" +
+                         "Screen Height: " + screen.height + "<br>" +
+                         "Color Depth: " + screen.colorDepth + "<br>" +
+                         "Pixel Depth: " + screen.pixelDepth + "<br>" +
+                         "Online Status: " + navigator.onLine + "<br>" +
+                         "Referrer URL: " + document.referrer + "<br>" +
+                         "Window Width: " + window.innerWidth + "<br>" +
+                         "Window Height: " + window.innerHeight + "<br>" +
+                         "Local Time: " + new Date().toLocaleString();
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                info.innerHTML += "<br>Latitude: " + position.coords.latitude +
+                                  "<br>Longitude: " + position.coords.longitude;
+            });
+        } else {
+            info.innerHTML += "<br>Geolocation is not supported by this browser.";
+        }
     }
     </script>
 </body>
