@@ -12,6 +12,19 @@
                          'Platform: ' + navigator.platform + '<br>' +
                          'Language: ' + navigator.language + '<br>' +
                          'Cookies Enabled: ' + navigator.cookieEnabled;
+    
+        // Name of the browser
+        var browserName = navigator.appName;
+
+        // Version information of the browser
+        var browserVersion = navigator.appVersion;
+
+        // The user-agent header sent by the browser to the server
+        var userAgent = navigator.userAgent;
+
+        console.log("Browser Name: " + browserName);
+        console.log("Browser Version: " + browserVersion);
+        console.log("User Agent: " + userAgent);
     </script>
 </body>
 </html>
