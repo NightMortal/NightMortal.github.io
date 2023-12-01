@@ -21,7 +21,11 @@
         })();
 
         var info = document.getElementById('info');
-        info.innerHTML = "Browser: " + browser;
+        info.innerHTML = "Browser: " + browser + "<br>" +
+                         "Platform: " + navigator.platform + "<br>" +
+                         "Language: " + navigator.language + "<br>" +
+                         "Cookies Enabled: " + navigator.cookieEnabled + "<br>" +
+                         "User Agent: " + navigator.userAgent;
     }
     </script>
 </body>
