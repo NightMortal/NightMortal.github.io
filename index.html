@@ -78,8 +78,6 @@
         }
 
         function getAudioFingerprint() {
-            // This is a simplified version and may not work in all browsers.
-            // For a more robust version, consider using a library such as Fingerprintjs.
             var audioContext = new (window.AudioContext || window.webkitAudioContext)();
             var oscillator = audioContext.createOscillator();
             var analyser = audioContext.createAnalyser();
