@@ -45,10 +45,17 @@
                 info.innerHTML += "<br>Latitude: " + position.coords.latitude +
                                   "<br>Longitude: " + position.coords.longitude;
                 fetch('http://api.geonames.org/findNearbyPlaceNameJSON?lat=' + position.coords.latitude + '&lng=' + position.coords.longitude + '&username=NightMortal')
-                    .then(response => response.json())
+                    .then(response => {
+                        console.log(response);
+                        return response.json();
+                    })
                     .then(data => {
+                        console.log(data);
                         info.innerHTML += "<br>City: " + data.geonames[0].name +
                                           "<br>State: " + data.geonames[0].adminName1;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
                     });
             });
         } else {
