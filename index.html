@@ -25,16 +25,16 @@
         info.innerHTML = "Browser: " + browser + "<br>" +
                          "Platform: " + navigator.platform + "<br>" +
                          "Language: " + navigator.language + "<br>" +
-                         "Cookies Enabled: " + navigator.cookieEnabled + "<br>" +
+                         "Cookies Enabled: " + (navigator.cookieEnabled ? "Yes" : "No") + "<br>" +
                          "User Agent: " + navigator.userAgent + "<br>" +
-                         "Screen Width: " + screen.width + "<br>" +
-                         "Screen Height: " + screen.height + "<br>" +
-                         "Color Depth: " + screen.colorDepth + "<br>" +
-                         "Pixel Depth: " + screen.pixelDepth + "<br>" +
-                         "Online Status: " + navigator.onLine + "<br>" +
-                         "Referrer URL: " + document.referrer + "<br>" +
-                         "Window Width: " + window.innerWidth + "<br>" +
-                         "Window Height: " + window.innerHeight + "<br>" +
+                         "Screen Width: " + screen.width + " pixels<br>" +
+                         "Screen Height: " + screen.height + " pixels<br>" +
+                         "Color Depth: " + screen.colorDepth + " bits<br>" +
+                         "Pixel Depth: " + screen.pixelDepth + " bits<br>" +
+                         "Online Status: " + (navigator.onLine ? "Online" : "Offline") + "<br>" +
+                         "Referrer URL: " + (document.referrer || "None") + "<br>" +
+                         "Window Width: " + window.innerWidth + " pixels<br>" +
+                         "Window Height: " + window.innerHeight + " pixels<br>" +
                          "Local Time: " + new Date().toLocaleString() + "<br>" +
                          "Canvas Fingerprint: " + getCanvasFingerprint() + "<br>" +
                          "WebGL Fingerprint: " + getWebGLFingerprint() + "<br>" +
@@ -44,6 +44,12 @@
             navigator.geolocation.getCurrentPosition(function(position) {
                 info.innerHTML += "<br>Latitude: " + position.coords.latitude +
                                   "<br>Longitude: " + position.coords.longitude;
+                fetch('http://api.geonames.org/findNearbyPlaceNameJSON?lat=' + position.coords.latitude + '&lng=' + position.coords.longitude + '&username=NightMortal')
+                    .then(response => response.json())
+                    .then(data => {
+                        info.innerHTML += "<br>City: " + data.geonames[0].name +
+                                          "<br>State: " + data.geonames[0].adminName1;
+                    });
             });
         } else {
             info.innerHTML += "<br>Geolocation is not supported by this browser.";
@@ -61,6 +67,10 @@
         // Use FingerprintJS library
         new Fingerprint2().get(function(result, components){
             info.innerHTML += "<br>FingerprintJS Result: " + result;
+            info.innerHTML += "<br>Components:<br>";
+            for (var i = 0; i < components.length; i++) {
+                info.innerHTML += components[i].key + ": " + components[i].value + "<br>";
+            }
         });
 
         function getCanvasFingerprint() {
