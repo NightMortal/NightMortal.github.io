@@ -10,7 +10,7 @@
             color: #f3f3f3;
             font-family: Arial, sans-serif;
         }
-        h1, button {
+        h1 {
             color: #ff6347;
         }
         .content {
@@ -28,7 +28,6 @@
             padding: 10px;
             margin: 5px 0;
             text-align: left;
-            font-size: 1.5em;
         }
         button:after {
             content: ' ▼';
@@ -50,7 +49,7 @@
     <div id="importance" class="content">...</div>
     <button onclick="toggleContent('protection')" aria-expanded="false">How to Protect Yourself</button>
     <div id="protection" class="content">...</div>
-    <button onclick="toggleContent('info')" aria-expanded="true">Browser Information</button>
+    <button onclick="toggleContent('info')" aria-expanded="false">Browser Information</button>
     <p id="info" class="content"></p>
     <div id="piechart"></div>
     <script>
