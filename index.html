@@ -16,13 +16,13 @@
         .content {
             display: none;
             width: 100%;
-            border: none; 
+            border: 1px solid #f3f3f3;
             padding: 10px;
             margin: 5px 0;
         }
         button {
             width: 100%;
-            border: none; 
+            border: 1px solid #f3f3f3;
             background-color: #232323;
             color: #f3f3f3;
             padding: 10px;
@@ -30,21 +30,6 @@
             text-align: left;
             font-size: 1.5em;
             cursor: pointer;
-            position: relative; 
-        }
-        button:before, button:after { 
-            content: '';
-            position: absolute;
-            width: 20%; 
-            height: 1px; 
-            background: #f3f3f3;
-            top: 50%;
-        }
-        button:before {
-            left: 10%; 
-        }
-        button:after {
-            right: 10%;
         }
         button:after {
             content: ' ▼';
