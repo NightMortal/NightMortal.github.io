@@ -15,30 +15,53 @@
         }
         .content {
             display: none;
+            width: 100%;
+            border: 1px solid #f3f3f3;
+            padding: 10px;
+            margin: 5px 0;
+        }
+        button {
+            width: 100%;
+            border: none;
+            background-color: #232323;
+            color: #f3f3f3;
+            padding: 10px;
+            margin: 5px 0;
+            text-align: left;
+        }
+        button:after {
+            content: ' ▼';
+        }
+        button[aria-expanded="true"]:after {
+            content: ' ▲';
         }
     </style>
 </head>
 <body>
     <h1>Your Privacy Information</h1>
-    <button onclick="toggleContent('intro')">Introduction</button>
+    <button onclick="toggleContent('intro')" aria-expanded="false">Introduction</button>
     <div id="intro" class="content">Welcome to our guide on digital fingerprinting. Here, we'll explain what it is, why it's important, and how you can protect yourself. Let's dive in!</div>
-    <button onclick="toggleContent('definition')">What is Digital Fingerprinting?</button>
+    <button onclick="toggleContent('definition')" aria-expanded="false">What is Digital Fingerprinting?</button>
     <div id="definition" class="content">...</div>
-    <button onclick="toggleContent('workings')">How Does It Work?</button>
+    <button onclick="toggleContent('workings')" aria-expanded="false">How Does It Work?</button>
     <div id="workings" class="content">...</div>
-    <button onclick="toggleContent('importance')">Why Should You Care?</button>
+    <button onclick="toggleContent('importance')" aria-expanded="false">Why Should You Care?</button>
     <div id="importance" class="content">...</div>
-    <button onclick="toggleContent('protection')">How to Protect Yourself</button>
+    <button onclick="toggleContent('protection')" aria-expanded="false">How to Protect Yourself</button>
     <div id="protection" class="content">...</div>
-    <p id="info"></p>
+    <button onclick="toggleContent('info')" aria-expanded="false">Browser Information</button>
+    <p id="info" class="content"></p>
     <div id="piechart"></div>
     <script>
         function toggleContent(id) {
             var content = document.getElementById(id);
+            var button = document.querySelector('button[onclick="toggleContent(\'' + id + '\')"]');
             if (content.style.display === "none") {
                 content.style.display = "block";
+                button.setAttribute('aria-expanded', 'true');
             } else {
                 content.style.display = "none";
+                button.setAttribute('aria-expanded', 'false');
             }
         }
 
