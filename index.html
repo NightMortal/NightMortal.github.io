@@ -15,14 +15,15 @@
         }
         .content {
             display: none;
-            width: 100%;
+            width: 90%; /* Reduced the width */
             border: 1px solid #f3f3f3;
             padding: 10px;
             margin: 5px 0;
+            word-wrap: break-word; /* Add this line */
         }
         button {
-            width: 100%;
-            border: 1px solid #f3f3f3;
+            width: 90%; /* Reduced the width */
+            border: none; /* Removed the border */
             background-color: #232323;
             color: #f3f3f3;
             padding: 10px;
@@ -67,20 +68,22 @@
             }
         }
 
-        var data = [{
-            values: [19, 26, 55],
-            labels: ['Residential', 'Non-Residential', 'Utility'],
-            type: 'pie'
-        }];
-
-        var layout = {
-            height: 400,
-            width: 500
-        };
-
-        Plotly.newPlot('piechart', data, layout);
-
+        // Add this script to open the 'info' content on page load
         window.onload = function() {
+            toggleContent('info');
+            var data = [{
+                values: [19, 26, 55],
+                labels: ['Residential', 'Non-Residential', 'Utility'],
+                type: 'pie'
+            }];
+
+            var layout = {
+                height: 400,
+                width: 500
+            };
+
+            Plotly.newPlot('piechart', data, layout);
+
             var browser = (function() {
                 var test = function(regexp) { return regexp.test(window.navigator.userAgent); }
                 switch (true) {
