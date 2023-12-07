@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>User Privacy Info</title>
+    <title>Your Privacy Information</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fingerprintjs2/1.8.6/fingerprint2.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
         body {
             background-color: #232323;
@@ -12,103 +13,139 @@
         h1 {
             color: #ff6347;
         }
+        .content {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <h1>Your Privacy Information</h1>
+    <button onclick="toggleContent('intro')">Introduction</button>
+    <div id="intro" class="content">Welcome to our guide on digital fingerprinting. Here, we'll explain what it is, why it's important, and how you can protect yourself. Let's dive in!</div>
+    <button onclick="toggleContent('definition')">What is Digital Fingerprinting?</button>
+    <div id="definition" class="content">...</div>
+    <button onclick="toggleContent('workings')">How Does It Work?</button>
+    <div id="workings" class="content">...</div>
+    <button onclick="toggleContent('importance')">Why Should You Care?</button>
+    <div id="importance" class="content">...</div>
+    <button onclick="toggleContent('protection')">How to Protect Yourself</button>
+    <div id="protection" class="content">...</div>
     <p id="info"></p>
+    <div id="piechart"></div>
     <script>
-    window.onload = function() {
-        var browser = (function() {
-            var test = function(regexp) { return regexp.test(window.navigator.userAgent); }
-            switch (true) {
-                case test(/edg/i): return "Microsoft Edge";
-                case test(/opr/i): return "Opera";
-                case test(/chrome/i): return "Google Chrome";
-                case test(/firefox/i): return "Firefox";
-                case test(/safari/i): return "Safari";
-                default: return "Other";
+        function toggleContent(id) {
+            var content = document.getElementById(id);
+            if (content.style.display === "none") {
+                content.style.display = "block";
+            } else {
+                content.style.display = "none";
             }
-        })();
+        }
 
-        var info = document.getElementById('info');
-        info.innerHTML = "Browser: " + browser + "<br>" +
-                         "Platform: " + navigator.platform + "<br>" +
-                         "Language: " + navigator.language + "<br>" +
-                         "Cookies Enabled: " + (navigator.cookieEnabled ? "Yes" : "No") + "<br>" +
-                         "User Agent: " + navigator.userAgent + "<br>" +
-                         "Screen Width: " + screen.width + " pixels<br>" +
-                         "Screen Height: " + screen.height + " pixels<br>" +
-                         "Color Depth: " + screen.colorDepth + " bits<br>" +
-                         "Pixel Depth: " + screen.pixelDepth + " bits<br>" +
-                         "Online Status: " + (navigator.onLine ? "Online" : "Offline") + "<br>" +
-                         "Referrer URL: " + (document.referrer || "None") + "<br>" +
-                         "Window Width: " + window.innerWidth + " pixels<br>" +
-                         "Window Height: " + window.innerHeight + " pixels<br>" +
-                         "Local Time: " + new Date().toLocaleString() + "<br>" +
-                         "Canvas Fingerprint: " + getCanvasFingerprint() + "<br>" +
-                         "WebGL Fingerprint: " + getWebGLFingerprint() + "<br>" +
-                         "Audio Fingerprint: " + getAudioFingerprint();
+        var data = [{
+            values: [19, 26, 55],
+            labels: ['Residential', 'Non-Residential', 'Utility'],
+            type: 'pie'
+        }];
 
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                info.innerHTML += "<br>Latitude: " + position.coords.latitude +
-                                  "<br>Longitude: " + position.coords.longitude;
-                fetch('http://api.geonames.org/findNearbyPlaceNameJSON?lat=' + position.coords.latitude + '&lng=' + position.coords.longitude + '&username=NightMortal')
-                    .then(response => response.json())
-                    .then(data => {
-                        info.innerHTML += "<br>City: " + data.geonames[0].name +
-                                          "<br>State: " + data.geonames[0].adminName1;
-                    });
+        var layout = {
+            height: 400,
+            width: 500
+        };
+
+        Plotly.newPlot('piechart', data, layout);
+
+        window.onload = function() {
+            var browser = (function() {
+                var test = function(regexp) { return regexp.test(window.navigator.userAgent); }
+                switch (true) {
+                    case test(/edg/i): return "Microsoft Edge";
+                    case test(/opr/i): return "Opera";
+                    case test(/chrome/i): return "Google Chrome";
+                    case test(/firefox/i): return "Firefox";
+                    case test(/safari/i): return "Safari";
+                    default: return "Other";
+                }
+            })();
+
+            var info = document.getElementById('info');
+            info.innerHTML = "Browser: " + browser + "<br>" +
+                             "Platform: " + navigator.platform + "<br>" +
+                             "Language: " + navigator.language + "<br>" +
+                             "Cookies Enabled: " + (navigator.cookieEnabled ? "Yes" : "No") + "<br>" +
+                             "User Agent: " + navigator.userAgent + "<br>" +
+                             "Screen Width: " + screen.width + " pixels<br>" +
+                             "Screen Height: " + screen.height + " pixels<br>" +
+                             "Color Depth: " + screen.colorDepth + " bits<br>" +
+                             "Pixel Depth: " + screen.pixelDepth + " bits<br>" +
+                             "Online Status: " + (navigator.onLine ? "Online" : "Offline") + "<br>" +
+                             "Referrer URL: " + (document.referrer || "None") + "<br>" +
+                             "Window Width: " + window.innerWidth + " pixels<br>" +
+                             "Window Height: " + window.innerHeight + " pixels<br>" +
+                             "Local Time: " + new Date().toLocaleString() + "<br>" +
+                             "Canvas Fingerprint: " + getCanvasFingerprint() + "<br>" +
+                             "WebGL Fingerprint: " + getWebGLFingerprint() + "<br>" +
+                             "Audio Fingerprint: " + getAudioFingerprint();
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    info.innerHTML += "<br>Latitude: " + position.coords.latitude +
+                                      "<br>Longitude: " + position.coords.longitude;
+                    fetch('http://api.geonames.org/findNearbyPlaceNameJSON?lat=' + position.coords.latitude + '&lng=' + position.coords.longitude + '&username=NightMortal')
+                        .then(response => response.json())
+                        .then(data => {
+                            info.innerHTML += "<br>City: " + data.geonames[0].name +
+                                              "<br>State: " + data.geonames[0].adminName1;
+                        });
+                });
+            } else {
+                info.innerHTML += "<br>Geolocation is not supported by this browser.";
+            }
+
+            // Set a cookie
+            document.cookie = "username=John Doe";
+
+            // Use session storage
+            sessionStorage.setItem("lastname", "Smith");
+
+            // Use local storage
+            localStorage.setItem("email", "john@example.com");
+
+            // Use FingerprintJS library
+            new Fingerprint2().get(function(result, components){
+                info.innerHTML += "<br>FingerprintJS Result: " + result;
+                info.innerHTML += "<br>Components:<br>";
+                for (var i = 0; i < components.length; i++) {
+                    info.innerHTML += components[i].key + ": " + components[i].value + "<br>";
+                }
             });
-        } else {
-            info.innerHTML += "<br>Geolocation is not supported by this browser.";
-        }
 
-        // Set a cookie
-        document.cookie = "username=John Doe";
-
-        // Use session storage
-        sessionStorage.setItem("lastname", "Smith");
-
-        // Use local storage
-        localStorage.setItem("email", "john@example.com");
-
-        // Use FingerprintJS library
-        new Fingerprint2().get(function(result, components){
-            info.innerHTML += "<br>FingerprintJS Result: " + result;
-            info.innerHTML += "<br>Components:<br>";
-            for (var i = 0; i < components.length; i++) {
-                info.innerHTML += components[i].key + ": " + components[i].value + "<br>";
+            function getCanvasFingerprint() {
+                var canvas = document.createElement('canvas');
+                var ctx = canvas.getContext('2d');
+                ctx.fillText('canvas fingerprint', 50, 50);
+                return canvas.toDataURL();
             }
-        });
 
-        function getCanvasFingerprint() {
-            var canvas = document.createElement('canvas');
-            var ctx = canvas.getContext('2d');
-            ctx.fillText('canvas fingerprint', 50, 50);
-            return canvas.toDataURL();
-        }
+            function getWebGLFingerprint() {
+                var canvas = document.createElement('canvas');
+                var gl = canvas.getContext('webgl');
+                var debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+                return gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+            }
 
-        function getWebGLFingerprint() {
-            var canvas = document.createElement('canvas');
-            var gl = canvas.getContext('webgl');
-            var debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
-            return gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+            function getAudioFingerprint() {
+                var audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                var oscillator = audioContext.createOscillator();
+                var analyser = audioContext.createAnalyser();
+                oscillator.connect(analyser);
+                analyser.connect(audioContext.destination);
+                oscillator.start(0);
+                var fingerprint = analyser.frequencyBinCount;
+                oscillator.stop(0);
+                return fingerprint;
+            }
         }
-
-        function getAudioFingerprint() {
-            var audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            var oscillator = audioContext.createOscillator();
-            var analyser = audioContext.createAnalyser();
-            oscillator.connect(analyser);
-            analyser.connect(audioContext.destination);
-            oscillator.start(0);
-            var fingerprint = analyser.frequencyBinCount;
-            oscillator.stop(0);
-            return fingerprint;
-        }
-    }
     </script>
 </body>
 </html>
