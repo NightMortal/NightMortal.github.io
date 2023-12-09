@@ -71,7 +71,21 @@
         }
 
         // Add this script to open the 'info' content on page load
-  
+        window.onload = function() {
+            toggleContent('info');
+            var data = [{
+                values: [19, 26, 55],
+                labels: ['Residential', 'Non-Residential', 'Utility'],
+                type: 'pie'
+            }];
+
+            var layout = {
+                height: 400,
+                width: 500
+            };
+
+            Plotly.newPlot('piechart', data, layout);
+
             var browser = (function() {
                 var test = function(regexp) { return regexp.test(window.navigator.userAgent); }
                 switch (true) {
